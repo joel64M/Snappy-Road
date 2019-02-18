@@ -17,7 +17,7 @@ public class CarScript : MonoBehaviour {
    public float boost=1;
     public float boostSmooth=3f;
    public float timer1=0;
-    float timer2 = 0;
+
     bool push;
     int forceSign;
     public bool wrongTile;
@@ -47,9 +47,10 @@ public class CarScript : MonoBehaviour {
                 GameManagerScript.instance.GameOver();
 
             }
-
+            if(!wrongTile)
             if (!Physics.Raycast(transform.position, Vector3.down, 10, roadMask))
             {
+                ReleaseConstraints();
                 if (!Physics.Raycast(transform.position + new Vector3(rayOffset.x, 0, -0.85f), Vector3.down, 10, roadMask))
                 {
 
@@ -103,17 +104,20 @@ public class CarScript : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         UIManagerScript.instance.GameOver();
     }
+    Vector3 dir = Vector3.zero;
     IEnumerator AddForce(int i)
     {
         float t=0;
-        boost = 0.5f;
-
-        while (t <=2 )
+        boost = 1f;
+      
+        dir.x = 1.5f *i;
+        dir.y = -1;
+        while (t <=2f )
         {
             // print("adding force"); 
             rb.velocity = Vector3.forward * carSpeed * boost;
             t += Time.deltaTime;
-            rb.AddForce(Vector3.right * sideForce * i*t);
+            rb.AddForce(dir* sideForce *t);
         }
         boost = 0;
        yield return null;
@@ -127,6 +131,6 @@ public class CarScript : MonoBehaviour {
     void ReleaseConstraints()
     {
         rb.constraints = RigidbodyConstraints.None;
-        rb.velocity = Vector3.zero;
+     //   rb.velocity = Vector3.zero;
     }
 }
