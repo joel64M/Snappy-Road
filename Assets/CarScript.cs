@@ -76,21 +76,29 @@ public class CarScript : MonoBehaviour {
 
 
             }
-            if (Vector3.Distance(transform.position, GameManagerScript.instance.currentPos) > 11|| wrongTile)
+            if (!wrongTile)
             {
-                // if (timer1>=0 && timer1 <= 1f)
+                if (Vector3.Distance(transform.position, GameManagerScript.instance.currentPos) > 12 )
                 {
-                    timer1 += Time.deltaTime *accelerationSmooth;
+                    // if (timer1>=0 && timer1 <= 1f)
+                    {
+                        timer1 += Time.deltaTime * accelerationSmooth;
+                    }
+                }
+                else
+                {
+                    //  if (timer1 >= 0 && timer1 <= 1f)
+                    {
+                        timer1 -= Time.deltaTime * brakingSmooth;
+                        //   boost = Mathf.Lerp(1, 6, timer1);
+                    }
                 }
             }
-            else 
+            else
             {
-                //  if (timer1 >= 0 && timer1 <= 1f)
-                {
-                    timer1 -= Time.deltaTime * brakingSmooth;
-                    //   boost = Mathf.Lerp(1, 6, timer1);
-                }
+                timer1 += Time.deltaTime * boostSmooth;
             }
+         
             timer1 = Mathf.Clamp01(timer1);
             boost = Mathf.Lerp(1, 4, timer1);
 
