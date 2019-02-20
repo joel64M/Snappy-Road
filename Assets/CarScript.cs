@@ -76,7 +76,7 @@ public class CarScript : MonoBehaviour {
 
 
             }
-            if (Vector3.Distance(transform.position, GameManagerScript.instance.currentPos) > 15 || wrongTile)
+            if (Vector3.Distance(transform.position, GameManagerScript.instance.currentPos) > 11|| wrongTile)
             {
                 // if (timer1>=0 && timer1 <= 1f)
                 {
@@ -104,7 +104,7 @@ public class CarScript : MonoBehaviour {
     }
     IEnumerator WaitForGameOver()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.85f);
         UIManagerScript.instance.GameOver();
     }
     Vector3 dir = Vector3.zero;

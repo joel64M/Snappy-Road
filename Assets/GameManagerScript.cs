@@ -18,10 +18,15 @@ public class GameManagerScript : MonoBehaviour {
     public GameObject[] cloudArray;
     public GameObject[] perfectArray;
     public TextMesh[] textMeshArray;
+
+    public AudioSource ads;
+    public AudioClip fallClip;
     public float correctRange=1;
     public float swingSpeed = 2f;
  public   Vector3 currentPos = Vector3.zero;
     public Vector3 currentCloudPos = new Vector3(0,0,-8);
+    Vector3 tempCloudPos = Vector3.zero;
+    Vector3 randRot = Vector3.zero;
     public  int platformIndex = -1;
     public int cloudIndex = -1;
     public int perfectIndex = -1;
@@ -72,8 +77,8 @@ public class GameManagerScript : MonoBehaviour {
         {
             if (Input.GetMouseButtonDown(0))
             {
-
-                 ind = platformIndex;
+                PlayTapSound();
+                ind = platformIndex;
                 if (ind == -1)
                 {
                     ind = platformArray.Length - 1;
@@ -105,7 +110,7 @@ public class GameManagerScript : MonoBehaviour {
         glowTimer = Mathf.Clamp01(s);
       //  if (s >= 1)
            // glowTimer = -1;
-        glowStrength = Mathf.Lerp(0, 2, glowTimer);
+        glowStrength = Mathf.Lerp(0, 1, glowTimer);
         glow.SetFloat("_MKGlowTexStrength", glowStrength);
     }
     void CalculateDistance()
@@ -113,21 +118,10 @@ public class GameManagerScript : MonoBehaviour {
       //  score = Vector3.Distance(startPos, player.transform.position);
         UIManagerScript.instance.UpdateScore(score);
     }
-    int placeCloud = 0;
-    void PlaceCloud()
-    {
-        placeCloud = 0;
-        currentCloudPos.x =Random.Range(0f,1f)> 0.5 ? Random.Range(-5f, -2f) : Random.Range(2, 5f);
-        currentCloudPos.z += 8;
-        currentCloudPos.y= -1.4f;
-        cloudIndex++;
 
-        if (cloudIndex > cloudArray.Length - 1)
-        {
-            cloudIndex = 0;
-        }
-        cloudArray[cloudIndex].transform.position = currentCloudPos;
-        cloudArray[cloudIndex].SetActive(true);
+    void PlayTapSound()
+    {
+        ads.Play();
     }
     Vector3 vec = Vector3.zero;
     void MovePlatform()
@@ -151,14 +145,17 @@ public class GameManagerScript : MonoBehaviour {
     {
         isGameStart = false;
         isGameOver = true;
-     //   CancelInvoke("CalculateDistance");
-       
+        //   CancelInvoke("CalculateDistance");
+        ads.clip = fallClip;
+        Invoke("PlayTapSound", 0.25f);
         if(score > PlayerPrefs.GetInt("SCORE", 0))
         {
             PlayerPrefs.SetInt("SCORE", score);
         }
       
     }
+
+    
     void Perfect()
     {
         perfectIndex++;
@@ -177,8 +174,8 @@ public class GameManagerScript : MonoBehaviour {
 
     public void  NextPlatform()
     {
-  
 
+  
         currentPos.z += 4;
         platformIndex++;
         int lastPlatformIndex = platformIndex-1;
@@ -212,5 +209,36 @@ public class GameManagerScript : MonoBehaviour {
       
 
     }
+    int placeCloud;
+    void PlaceCloud()
+    {
+        placeCloud = 0;
+        float xx = Random.Range(0f, 1f); ;
+        currentCloudPos.x = xx>0.5f? Random.Range(-6f, -2.5f) : Random.Range(2.5f, 6f);
+        currentCloudPos.y = -1.4f;
+        currentCloudPos.z += 8;
+        NextCloudIndex(0);
+        currentCloudPos.x = xx < 0.5f ? Random.Range(-6f, -2.5f) : Random.Range(2.5f, 6f);
+        currentCloudPos.y = -4.4f;
+        NextCloudIndex(0);
 
+    }
+
+    void NextCloudIndex(int i)
+    {
+        cloudIndex++;
+
+        if (cloudIndex > cloudArray.Length - 1)
+        {
+            cloudIndex = 0;
+        }
+        tempCloudPos  = currentCloudPos;
+        tempCloudPos.z += i;
+        randRot.y = Random.Range(1, 4) * 90;
+        randRot.x = Random.Range(1,3) * 180;
+       // randRot.z = Random.Range(1, 4) * 90;
+        cloudArray[cloudIndex].transform.position = tempCloudPos;
+        cloudArray[cloudIndex].transform.rotation = Quaternion.Euler(randRot);
+        cloudArray[cloudIndex].SetActive(true);
+    }
 }
