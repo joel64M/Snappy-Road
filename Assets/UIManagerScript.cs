@@ -32,16 +32,16 @@ public class UIManagerScript : MonoBehaviour {
         gamePanel.SetActive(true);
 
     }
-    public void UpdateScore(float f)
+    public void UpdateScore(int f)
     {
-        scoreText.text = f.ToString("F2") + "m";
+        scoreText.text = f.ToString() ;
     }
     public void GameOver()
     {
         gameOverPanel.SetActive(true);
         gamePanel.SetActive(false);
-        gameOverScoreText.text ="Score : "+ GameManagerScript.instance.score.ToString("F2") + "m";
-        gameOverHighScoreText.text = "Best : " + PlayerPrefs.GetFloat("SCORE", 0).ToString("F2") + "m";
+        gameOverScoreText.text ="Score : "+ GameManagerScript.instance.score.ToString() ;
+        gameOverHighScoreText.text = "Best : " + PlayerPrefs.GetInt("SCORE", 0).ToString() ;
     }
 
     public void _RestartButton()

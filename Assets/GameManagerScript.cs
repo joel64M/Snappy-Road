@@ -6,16 +6,18 @@ public class GameManagerScript : MonoBehaviour {
     public static GameManagerScript instance;
 
     public bool isGameStart, isGameOver;
-    public float score;
+    public int score;
+    public int multiplier=1;
     
     public GameObject platformPrefab;
     public GameObject cloudPrefab;
     public GameObject perfectPrefab;
 
+    public Material glow;
     public  GameObject[] platformArray;
     public GameObject[] cloudArray;
     public GameObject[] perfectArray;
-
+    public TextMesh[] textMeshArray;
     public float correctRange=1;
     public float swingSpeed = 2f;
  public   Vector3 currentPos = Vector3.zero;
@@ -26,7 +28,9 @@ public class GameManagerScript : MonoBehaviour {
 
     float movement = 0;
 
-    Vector3 startPos = new Vector3(0, 0, -6.25f);
+    float glowStrength = 0;
+    float glowTimer;
+    float s;
 
     public GameObject player;
     private void Awake()
@@ -52,14 +56,16 @@ public class GameManagerScript : MonoBehaviour {
         {
             perfectArray[i] = Instantiate(perfectPrefab);
             perfectArray[i].SetActive(false);
+            textMeshArray[i] =  perfectArray[i].gameObject.GetComponentInChildren<TextMesh>();
 
         }
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 6; i++)
         {
             PlaceCloud();
         }
+  
     }
-
+    int ind;
     private void Update()
     {
         if(isGameStart && !isGameOver)
@@ -67,15 +73,20 @@ public class GameManagerScript : MonoBehaviour {
             if (Input.GetMouseButtonDown(0))
             {
 
-                int ind = platformIndex;
+                 ind = platformIndex;
                 if (ind == -1)
                 {
                     ind = platformArray.Length - 1;
                 }
                 if (!player.GetComponent<CarScript>().wrongTile  && platformArray[ind].transform.position.x >  - correctRange && platformArray[ind].transform.position.x < correctRange)
                 {
+
                     NextPlatform();
+                    placeCloud++;
+                    if(placeCloud>=2)
                     PlaceCloud();
+                    score = score+ 1+ multiplier;
+                    UIManagerScript.instance.UpdateScore(score);
                 }
               else
                 {
@@ -86,17 +97,26 @@ public class GameManagerScript : MonoBehaviour {
             }
             if(!player.GetComponent<CarScript>().wrongTile)
             MovePlatform();
-          
+
+       
         }
-      
+        s -= Time.deltaTime *0.7f;
+
+        glowTimer = Mathf.Clamp01(s);
+      //  if (s >= 1)
+           // glowTimer = -1;
+        glowStrength = Mathf.Lerp(0, 2, glowTimer);
+        glow.SetFloat("_MKGlowTexStrength", glowStrength);
     }
     void CalculateDistance()
     {
-        score = Vector3.Distance(startPos, player.transform.position);
+      //  score = Vector3.Distance(startPos, player.transform.position);
         UIManagerScript.instance.UpdateScore(score);
     }
+    int placeCloud = 0;
     void PlaceCloud()
     {
+        placeCloud = 0;
         currentCloudPos.x =Random.Range(0f,1f)> 0.5 ? Random.Range(-5f, -2f) : Random.Range(2, 5f);
         currentCloudPos.z += 8;
         currentCloudPos.y= -1.4f;
@@ -109,18 +129,21 @@ public class GameManagerScript : MonoBehaviour {
         cloudArray[cloudIndex].transform.position = currentCloudPos;
         cloudArray[cloudIndex].SetActive(true);
     }
+    Vector3 vec = Vector3.zero;
     void MovePlatform()
     {
       swingSpeed += Time.deltaTime*0.04f;
       movement += Time.deltaTime *swingSpeed;
-        platformArray[platformIndex].transform.position = new Vector3(Mathf.Sin(movement) * 5f, 0, currentPos.z);
+        vec.x = Mathf.Sin(movement) * 5f;
+        vec.z = currentPos.z;
+        platformArray[platformIndex].transform.position = vec;// new Vector3(Mathf.Sin(movement) * 5f, 0, currentPos.z);
     }
     public void StartGame()
     {
         isGameStart = true;
         isGameOver = false;
         score = 0;
-        InvokeRepeating("CalculateDistance", 0, 0.3f);
+       // InvokeRepeating("CalculateDistance", 0, 0.3f);
        
     }
 
@@ -128,11 +151,11 @@ public class GameManagerScript : MonoBehaviour {
     {
         isGameStart = false;
         isGameOver = true;
-        CancelInvoke("CalculateDistance");
+     //   CancelInvoke("CalculateDistance");
        
-        if(score > PlayerPrefs.GetFloat("SCORE", 0f))
+        if(score > PlayerPrefs.GetInt("SCORE", 0))
         {
-            PlayerPrefs.SetFloat("SCORE", score);
+            PlayerPrefs.SetInt("SCORE", score);
         }
       
     }
@@ -146,11 +169,16 @@ public class GameManagerScript : MonoBehaviour {
         }
         perfectArray[perfectIndex].SetActive(false);
         perfectArray[perfectIndex].transform.position = currentPos;
+        textMeshArray[perfectIndex].text = "+" + multiplier.ToString();
         perfectArray[perfectIndex].SetActive(true);
 
     }
+    Vector3 perfectVec = Vector3.zero;
+
     public void  NextPlatform()
     {
+  
+
         currentPos.z += 4;
         platformIndex++;
         int lastPlatformIndex = platformIndex-1;
@@ -163,12 +191,22 @@ public class GameManagerScript : MonoBehaviour {
             platformIndex = 0;
         }
         platformArray[platformIndex].transform.position = currentPos;
-        if (platformArray[lastPlatformIndex].transform.position.x <= 0.2f && platformArray[lastPlatformIndex].transform.position.x >= -0.2f)
+        if (platformArray[lastPlatformIndex].transform.position.x <= 0.25f && platformArray[lastPlatformIndex].transform.position.x >= -0.25f)
         {
-            platformArray[lastPlatformIndex].transform.position = new Vector3(0, 0, platformArray[lastPlatformIndex].transform.position.z);
+            perfectVec.z = platformArray[lastPlatformIndex].transform.position.z;
+            platformArray[lastPlatformIndex].transform.position = perfectVec;// new Vector3(0, 0, );
+           // glowTimer = 1;
+            s = 1;
+              //   print(platformArray[lastPlatformIndex].transform.name);
+              multiplier++;
             Perfect();
-          //  print(platformArray[lastPlatformIndex].transform.name);
         }
+        else
+        {
+          //  glowTimer = -1;
+            multiplier = 0;
+        }
+   
         platformArray[platformIndex].SetActive(true);
 
       

@@ -16,7 +16,10 @@ public class CarScript : MonoBehaviour {
 
    public float boost=1;
     public float boostSmooth=3f;
-   public float timer1=0;
+    public float accelerationSmooth = 3f;
+    public float brakingSmooth = 3f;
+
+    public float timer1=0;
 
     bool push;
     int forceSign;
@@ -73,18 +76,18 @@ public class CarScript : MonoBehaviour {
 
 
             }
-            if (Vector3.Distance(transform.position, GameManagerScript.instance.currentPos) > 10 || wrongTile)
+            if (Vector3.Distance(transform.position, GameManagerScript.instance.currentPos) > 15 || wrongTile)
             {
                 // if (timer1>=0 && timer1 <= 1f)
                 {
-                    timer1 += Time.deltaTime * boostSmooth;
+                    timer1 += Time.deltaTime *accelerationSmooth;
                 }
             }
             else 
             {
                 //  if (timer1 >= 0 && timer1 <= 1f)
                 {
-                    timer1 -= Time.deltaTime * boostSmooth;
+                    timer1 -= Time.deltaTime * brakingSmooth;
                     //   boost = Mathf.Lerp(1, 6, timer1);
                 }
             }
@@ -110,7 +113,7 @@ public class CarScript : MonoBehaviour {
         float t=0;
         boost = 1f;
       
-        dir.x = 1.5f *i;
+        dir.x = 1.75f *i;
         dir.y = -1;
         while (t <=2f )
         {
