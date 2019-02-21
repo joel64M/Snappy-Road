@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using GameAnalyticsSDK;
 public class GameManagerScript : MonoBehaviour {
     public static GameManagerScript instance;
 
@@ -45,6 +45,7 @@ public class GameManagerScript : MonoBehaviour {
     }
     private void Start()
     {
+
         for (int i = 0; i < platformArray.Length; i++)
         {
             platformArray[i] = Instantiate(platformPrefab ,new Vector3(1,0,0),Quaternion.identity);
@@ -68,7 +69,7 @@ public class GameManagerScript : MonoBehaviour {
         {
             PlaceCloud();
         }
-  
+
     }
     int ind;
     private void Update()
@@ -137,8 +138,9 @@ public class GameManagerScript : MonoBehaviour {
         isGameStart = true;
         isGameOver = false;
         score = 0;
-       // InvokeRepeating("CalculateDistance", 0, 0.3f);
-       
+        // InvokeRepeating("CalculateDistance", 0, 0.3f);
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game Started");
+
     }
 
     public void GameOver()
@@ -152,10 +154,11 @@ public class GameManagerScript : MonoBehaviour {
         {
             PlayerPrefs.SetInt("SCORE", score);
         }
-      
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "Score " + score.ToString());
+
     }
 
-    
+
     void Perfect()
     {
         perfectIndex++;
