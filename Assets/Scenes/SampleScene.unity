@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44735754, g: 0.49729294, b: 0.57524043, a: 1}
+  m_IndirectSpecularColor: {r: 0.44735777, g: 0.49729288, b: 0.57524073, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -209,8 +209,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.000022888, y: -23}
-  m_SizeDelta: {x: 677.65, y: 293.4}
+  m_AnchoredPosition: {x: -0.000022888, y: -0.000013828}
+  m_SizeDelta: {x: 677.7, y: 231.1}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &159114709
 MonoBehaviour:
@@ -575,7 +575,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.0004979, y: 269}
+  m_AnchoredPosition: {x: -0.0004979, y: 209}
   m_SizeDelta: {x: 482.3, y: 152.6}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &386489992
@@ -900,7 +900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.0000076293945, y: 277}
+  m_AnchoredPosition: {x: 0.0000076293945, y: 210}
   m_SizeDelta: {x: 800, y: 250.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &539065608
@@ -1643,12 +1643,12 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 100
+  m_fontSize: 108.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 100
+  m_fontSizeMax: 110
   m_fontStyle: 16
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
@@ -1850,6 +1850,10 @@ PrefabInstance:
     - target: {fileID: 1854318491239658, guid: f0e08392f87d3724b8c62e7ca3d55805, type: 3}
       propertyPath: m_Name
       value: StartPlatfrom (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1854318491239658, guid: f0e08392f87d3724b8c62e7ca3d55805, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4905709367485140, guid: f0e08392f87d3724b8c62e7ca3d55805, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7232,12 +7236,12 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 100
+  m_fontSize: 110
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 100
+  m_fontSizeMax: 110
   m_fontStyle: 16
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
