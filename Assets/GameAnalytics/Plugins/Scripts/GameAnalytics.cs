@@ -79,11 +79,9 @@ namespace GameAnalyticsSDK
             DontDestroyOnLoad(gameObject);
 
             Application.logMessageReceived += GA_Debug.HandleLog;
-        }
-        private void Start()
-        {
             Initialize();
         }
+
         void OnDestroy()
         {
             if(!Application.isPlaying)

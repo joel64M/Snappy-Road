@@ -16,7 +16,7 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - '1845315292159275 '
+  - 723226168061034
   appLabels:
   - App Name
   cookie: 1
@@ -28,3 +28,5 @@ MonoBehaviour:
   appLinkSchemes:
   - list: []
   uploadAccessToken: 
+  autoLogAppEventsEnabled: 1
+  advertiserIDCollectionEnabled: 1
