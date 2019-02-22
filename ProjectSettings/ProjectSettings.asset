@@ -155,7 +155,8 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.stareout.snappyroad
     iOS: com.stareout.snappyroad
-  buildNumber: {}
+  buildNumber:
+    iOS: 1
   AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
